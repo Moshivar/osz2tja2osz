@@ -7,10 +7,11 @@ This project provides a tool for converting `.osz` files (osu! beatmap files) in
 ## Features
 - **Batch conversion** of `.osz` files to `.tja` files.
 - Automatically maps osu! difficulties (up to 4 per `.tja` file) to Taiko's **Oni**, **Hard**, **Normal**, and **Easy** difficulties.
-- Supports maps with **more than 4 difficulties** by splitting them into multiple OpenTaiko-compatible folders (e.g., `title - 1`, `title - 2`).
+- Supports maps with **more than 4 difficulties** by splitting them into multiple folders (e.g., `title - 1`, `title - 2`).
 - **Progressive star scaling**: Difficulty stars are scaled progressively between folders to ensure that stars for higher difficulties increase as you go.
+  > Note that these star assignments **ARE NOT** equlivent to the typical Taiko star ratings since osu! has a much broader difficulty range than Taiko.
 - **Custom folder support**: Specify custom input and output folders when running the program.
-- **MAKER** field added: Each generated `.tja` file includes the creator information.
+- **Metadata support** Each generated `.tja` file includes the title, subtitle, and creator information.
 
 ## Requirements
 - Python 3.x
@@ -76,15 +77,6 @@ When specifying folders:
 
 ## Not Implemented
 - **`tja2osz` Conversion**: The reverse conversion from `.tja` to `.osz` is not implemented yet. Selecting this option will do nothing.
-
-## Example Workflow
-
-1. **Place `.osz` files** in the `Songs` folder (or specify a different folder).
-2. **Run the script**:
-   ```bash
-   python main.py
-   ```
-3. The converted `.tja` files will be saved in the `Output` folder, split across multiple folders if necessary.
 
 ## Contributing
 - Feel free to submit issues or feature requests.
