@@ -15,13 +15,14 @@ This project provides a tool for converting `.osz` files (osu! beatmap files) in
 ## Requirements
 - Python 3.x
 - Dependencies:
-  - `osu2tja.py`
-  - `tja2osu_file_dvide.py` (Note: `tja2osz` is not yet implemented)
+  - a `.osz` to convert
+  - OpenTaiko or another software that can run `.tja` files
 
 ## Setup
-1. Place your `.osz` files in the `Songs` folder (default input folder).
+1. Place any amount of `.osz` files in the `Songs` folder (default input folder).
 2. The generated `.tja` files and audio files will be output to the `Output` folder by default.
-3. You can customize the input and output folders via command-line arguments.
+   > They will be in their own individual Chart Folders for ease of use
+4. You can customize the input and output folders via command-line arguments.
 
 ## Usage
 
@@ -34,7 +35,7 @@ python main.py
 This will:
 - Look for `.osz` files in the `Songs` folder.
 - Output converted `.tja` files into the `Output` folder.
-- If an `.osz` file contains more than 4 difficulties, the program will split them into separate folders (e.g., `title - 1`, `title - 2`), with progressively harder star ratings.
+- If an `.osz` file contains more than 4 difficulties, the program will split them into separate folders (e.g., `title - 1`, `title - 2`), in order from easiest difficulties to the hardest.
 
 ## Customizing Input and Output Folders
 You can specify custom input and output folders when running the program:
@@ -45,7 +46,7 @@ You can specify custom input and output folders when running the program:
   ```
   Example:
   ```bash
-  python main.py test_folder
+  python main.py a_folder
   ```
 
 - **Specify both input and output folders**:
@@ -54,7 +55,7 @@ You can specify custom input and output folders when running the program:
   ```
   Example:
   ```bash
-  python main.py test_folder test_output
+  python main.py a_folder b_folder
   ```
 
 When specifying folders:
@@ -74,7 +75,7 @@ When specifying folders:
    - If there are more than 4 difficulties, the program will split them into multiple folders (e.g., `title - 1`, `title - 2`), scaling difficulty stars progressively.
 
 ## Not Implemented
-- **`tja2osz` Conversion**: The reverse conversion from `.tja` to `.osz` is not implemented yet. Selecting this option will show a message noting it is not currently functional.
+- **`tja2osz` Conversion**: The reverse conversion from `.tja` to `.osz` is not implemented yet. Selecting this option will do nothing.
 
 ## Example Workflow
 
