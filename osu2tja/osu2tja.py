@@ -365,38 +365,37 @@ def write_incomplete_bar(tm, bar_data, begin, end, tja_contents):
             if beat_cnt >= min_beat_cnt and \
                     int(begin + 1.0 * beat_cnt * T_MINUTE / tm["bpm"]) <= end:
 
-                tja_contents.append("#MEASURE"+str)
+                tja_contents.append(make_cmd(FMT_MEASURECHANGE, int(beat_cnt), 4))  # Fixing the MEASURE issue
                 write_bar_data(tm, bar_data, begin, begin +
                                beat_cnt * tpb, tja_contents)
                 delay_time = end - \
                     int(begin + 1.0 * beat_cnt * T_MINUTE / tm["bpm"])
                 assert delay_time >= 0, "DELAY FAULT %f" % delay_time
 
-                # jiro will ignore delays short than 0.001s
-                # TODO: add up total epsilon!? and fix it later?
+                # jiro will ignore delays shorter than 0.001s
                 if delay_time >= 1:
-                    tja_contents.append(make_cmd(FMT_DELAY, delay_time/1000.0))
+                    tja_contents.append(make_cmd(FMT_DELAY, delay_time / 1000.0))
                 return
 
     # Missing all, guess a measure here!
-    denominator = 48*48
+    denominator = 48 * 48
     numerator = int(round(denominator * min_beat_cnt))
     _gcd = gcd(denominator, numerator)
-    denominator /= _gcd
-    numerator /= _gcd
+    denominator //= _gcd
+    numerator //= _gcd
 
     if denominator in (1, 2):
         fix_mul = 4 / denominator
         denominator *= fix_mul
         numerator *= fix_mul
 
-    tja_contents.append("//[Warning] This may be erronous!!")
-    tja_contents.append(make_cmd(MEASURE, numerator, denominator))
+    tja_contents.append("//[Warning] This may be erroneous!!")
+    tja_contents.append(make_cmd(FMT_MEASURECHANGE, int(numerator), int(denominator)))  # Fixing the MEASURE issue
     write_bar_data(tm, bar_data, begin, begin +
                    min_beat_cnt * tpb, tja_contents)
     delay_time = end - int(begin + 1.0 * min_beat_cnt * T_MINUTE / tm["bpm"])
     if delay_time >= 1:
-        tja_contents.append(make_cmd(DELAY, delay_time / 1000.0))
+        tja_contents.append(make_cmd(FMT_DELAY, delay_time / 1000.0))
     return
 
 
