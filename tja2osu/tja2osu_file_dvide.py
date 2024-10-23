@@ -21,7 +21,7 @@ def get_course_by_number(str):
     else: return "Oni%d" % (num-3)
 
 def get_comm_data(filename):
-    assert isinstance(filename, basestring)
+    assert isinstance(filename, str)
     assert filename.endswith(".tja")
     global TITLE, SUBTITLE, BPM, WAVE, OFFSET
     try: fobj = open(filename)
@@ -34,7 +34,7 @@ def get_comm_data(filename):
         vname = line[:i].strip()
         vval = line[i+1:].strip()
         if vname == "TITLE": TITLE = vval
-        elif vname == "SUBTITLE": SUBTITILE = vval
+        elif vname == "SUBTITLE": SUBTITLE = vval
         elif vname == "BPM": BPM = vval
         elif vname == "WAVE": WAVE = vval
         elif vname == "OFFSET": OFFSET = vval
@@ -46,11 +46,11 @@ def get_comm_data(filename):
     return course_list
 
 def divide_diff(filename):
-    assert isinstance(filename, basestring)
+    assert isinstance(filename, str)
     assert filename.endswith(".tja")
 
     course_list = get_comm_data(filename)
-    file_list = map(lambda x:filename[:-4]+" "+x+".tja", course_list)
+    file_list = list(map(lambda x: filename[:-4] + " " + x + ".tja", course_list))
 
     diff_data = []
     started = False
@@ -62,20 +62,21 @@ def divide_diff(filename):
 
             if i >= len(file_list):
                 course_list.append("No%d" % i)
-                file_list.append(filename[:-4]+ (" No%d" % i) + ".tja")
+                file_list.append(filename[:-4]+(" No%d" % i)+".tja")
                 
             fout = open("tmp\\"+file_list[i], "w")
 
-            print >> fout, "TITLE:", TITLE
-            print >> fout, "SUBTITLE:", SUBTITLE
-            print >> fout, "BPM:", BPM
-            print >> fout, "WAVE:", WAVE
-            print >> fout, "OFFSET:", OFFSET
-            print >> fout, "DEMOSTART:", DEMOSTART
-            print >> fout
-            print >> fout, "COURSE:", course_list[i] 
+            print("TITLE:", TITLE, file=fout)
+            print("SUBTITLE:", SUBTITLE, file=fout)
+            print("BPM:", BPM, file=fout)
+            print("WAVE:", WAVE, file=fout)
+            print("OFFSET:", OFFSET, file=fout)
+            print("DEMOSTART:", DEMOSTART, file=fout)
+            print(file=fout)
+            print("COURSE:", course_list[i], file=fout)
 
-            for str in diff_data: print >>fout, str
+            for str in diff_data: 
+                print(str, file=fout)
             fout.close()
             diff_data = []
             started = False
@@ -92,7 +93,7 @@ def divide_diff(filename):
     return file_list
 
 def divide_branch(filename):
-    assert isinstance(filename, basestring)
+    assert isinstance(filename, str)
     assert filename.endswith(".tja")
     try: fobj = open("tmp\\"+filename)
     except IOError: assert False, "can't open tja file."
@@ -150,7 +151,7 @@ def divide_branch(filename):
     for f in file_list:
         fout = open("tmp\\"+f, "w")
         for str in branch_data[i]:
-            print >> fout, str
+            print(str, file=fout)
         fout.close()
         i += 1
 
@@ -172,16 +173,15 @@ def divide_tja(filename):
         name = all_ready_file[:-4]
         piece = name.rsplit(None, 1)
         name = piece[0] + "[" + piece[1] + "]"
-        fout = open("out\\%s.osu" % (name,) ,"w")
+        fout = open("out\\%s.osu" % (name,), "w")
         sys.stdout = fout
         module = reload(tja2osu)
         tja2osu.tja2osu("tmp\\%s" % all_ready_file)
         fout.close()
         
         sys.stdout = old_stdout
-        print "Generate:%s.osu" % name
+        print("Generate:%s.osu" % name)
 
 if __name__ == "__main__":
     assert len(sys.argv) > 1
     divide_tja(sys.argv[1])
-    

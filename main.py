@@ -1,8 +1,10 @@
 from osu2tja.osu2tja import osu2tja, reset_global_variables
+from tja2osu.tja2osu_file_dvide import divide_tja  # Use divide_tja for tja2osz conversion
 from zipfile import ZipFile, is_zipfile
 from typing import Dict, List
 from os import path
 import os
+import sys
 from io import TextIOWrapper
 
 # Define a default MEASURE value
@@ -26,7 +28,7 @@ def extract_osu_file_info(file) -> Dict[str, object]:
         line = file.readline()
     return result
 
-def convert(source_path: str, target_path: str) -> None:
+def convert_osz2tja(source_path: str, target_path: str) -> None:
     warnings = []  # List to store warnings
     try:
         if not is_zipfile(source_path):
@@ -101,13 +103,13 @@ def convert(source_path: str, target_path: str) -> None:
     except Exception as e:
         raise RuntimeError(f"Error converting {source_path}: {e}")
 
-def batch_convert(input_folder: str, output_folder: str):
+def batch_convert_osz2tja(input_folder: str, output_folder: str):
     skipped_files = []
     for filename in os.listdir(input_folder):
         if filename.endswith(".osz"):
             source_path = path.join(input_folder, filename)
             try:
-                convert(source_path, output_folder)
+                convert_osz2tja(source_path, output_folder)
             except Exception as e:
                 print(f"Skipping {filename} due to error: {e}")
                 skipped_files.append(filename)
@@ -117,8 +119,31 @@ def batch_convert(input_folder: str, output_folder: str):
         for file in skipped_files:
             print(f"- {file}")
 
+def batch_convert_tja2osz(input_folder: str, output_folder: str):
+    for filename in os.listdir(input_folder):
+        if filename.endswith(".tja"):
+            try:
+                divide_tja(path.join(input_folder, filename))
+                print(f"Converted {filename} to OSZ")
+            except Exception as e:
+                print(f"Error converting {filename}: {e}")
+
 if __name__ == "__main__":
-    import sys
-    input_folder = sys.argv[1]
-    output_folder = sys.argv[2]
-    batch_convert(input_folder, output_folder)
+    print("Select conversion mode:")
+    print("1. osz2tja (default)")
+    print("2. tja2osz")
+    choice = input("Enter 1 or 2: ")
+
+    input_folder = "Songs"
+    output_folder = "Output"
+
+    print(f"Default input folder: {input_folder}")
+    print(f"Default output folder: {output_folder}")
+
+    if choice == "2":
+        batch_convert_tja2osz(input_folder, output_folder)
+    else:
+        batch_convert_osz2tja(input_folder, output_folder)
+
+    input("\nPress enter to exit...")
+    sys.exit(0)
