@@ -602,6 +602,7 @@ def osu2tja(fp, course, level, audio_name):
     tja_heads.append("BPM:%.2f" % timingpoints[0]["bpm"])
     tja_heads.append("OFFSET:-%.3f" % (timingpoints[0]["offset"] / 1000.0))
     tja_heads.append("DEMOSTART:%.3f" % (preview / 1000.0))
+    tja_heads.append("MAKER:%s" % creator)
 
     tja_contents.append("")
     tja_contents.append("COURSE:%s" % course)  # TODO: GUESS DIFFICULTY
