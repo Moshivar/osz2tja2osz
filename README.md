@@ -1,7 +1,7 @@
 
 # osz2tja2osz
 
-### Note: ```!tja2osu is NOT implemented yet!```
+### Note: ```tja2osu is NOT implemented yet!```
 
 ## Overview
 This project provides a tool for converting `.osz` files (osu! beatmap files) into OpenTaiko-compatible `.tja` files, suitable for use in Taiko no Tatsujin-style rhythm games. The tool automatically assigns difficulties and supports converting `.osz` files with more than 4 difficulties by splitting them into multiple Taiko-compatible folders. The program also allows customization of input and output folders for batch processing.
