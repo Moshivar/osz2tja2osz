@@ -134,11 +134,18 @@ if __name__ == "__main__":
     print("2. tja2osz")
     choice = input("Enter 1 or 2: ")
 
+    # Set default input and output folders
     input_folder = "Songs"
     output_folder = "Output"
 
-    print(f"Default input folder: {input_folder}")
-    print(f"Default output folder: {output_folder}")
+    # Check for command-line arguments
+    if len(sys.argv) > 1:
+        input_folder = sys.argv[1]  # Override input folder if provided
+    if len(sys.argv) > 2:
+        output_folder = sys.argv[2]  # Override output folder if provided
+
+    print(f"Input folder: {input_folder}")
+    print(f"Output folder: {output_folder}")
 
     if choice == "2":
         batch_convert_tja2osz(input_folder, output_folder)
