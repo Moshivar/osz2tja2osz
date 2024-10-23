@@ -7,8 +7,7 @@
 *.o
 *.so
 
-# EditPad Pro Project File #
-###################
-*.epp
-
-.DS_Store
+/Songs
+/test
+/Output
+/osu2tja/__pycache__
